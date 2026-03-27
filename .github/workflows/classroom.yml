@@ -1,0 +1,112 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: T1
+      id: t1
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: T1
+        setup-command: ''
+        command: python3 Problem_01.py
+        input: |-
+          The not to do list
+          5
+        expected-output: |-
+          Book: The not to do list
+          Days overdue: 5
+          Fine: Rs. 25.0
+        comparison-method: exact
+        timeout: 10
+        max-score: 5
+    - name: T2
+      id: t2
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: T2
+        setup-command: ''
+        command: python3 Problem_02.py
+        input: |-
+          The Handbook of Psychology
+          10
+          15
+        expected-output: |-
+          Book: The Handbook of Psychology
+          Days overdue: 10
+          Fine: Rs. 150.0
+        comparison-method: exact
+        timeout: 10
+        max-score: 5
+    - name: T3
+      id: t3
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: T3
+        setup-command: ''
+        command: python3 Problem_03.py
+        input: |-
+          The not to do list
+          40
+        expected-output: |-
+          Book: The not to do list
+          Days overdue: 40
+          Fine: Rs. 150.0
+          You have accumulated the maximum fine of INR: 150.0
+        comparison-method: contains
+        timeout: 10
+        max-score: 5
+    - name: T4
+      id: t4
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: T4
+        setup-command: ''
+        command: python3 Problem_04.py
+        input: |-
+          The not to do list
+          5
+          10.0
+        expected-output: |-
+          Book: The not to do list
+          Days overdue: 5
+          Fine: Rs. 50.0
+        comparison-method: exact
+        timeout: 10
+        max-score: 5
+    - name: T5
+      id: t5
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: T5
+        setup-command: ''
+        command: python3 Problem_05.py
+        input: |-
+          Atomic Habits
+          40
+          5
+          200
+        expected-output: "Book: Atomic Habits\nDays overdue: 40\nFine: Rs. 200.0 "
+        comparison-method: exact
+        timeout: 10
+        max-score: 5
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        T1_RESULTS: "${{steps.t1.outputs.result}}"
+        T2_RESULTS: "${{steps.t2.outputs.result}}"
+        T3_RESULTS: "${{steps.t3.outputs.result}}"
+        T4_RESULTS: "${{steps.t4.outputs.result}}"
+        T5_RESULTS: "${{steps.t5.outputs.result}}"
+      with:
+        runners: t1,t2,t3,t4,t5
