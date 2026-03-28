@@ -1,42 +1,32 @@
 def calculate_fine(book_title, days_overdue, daily_rate=5.0, max_fine=150.0):
     fine = days_overdue * daily_rate
 
+    capped = False
     if fine > max_fine:
         fine = max_fine
-        return fine, True
-    else:
-        return fine, False
+        capped = True
+
+    return fine, capped
 
 
-# input lena (flexible input)
-data = input().split()
+# input handling (FIXED)
+book_title = input().strip()
+days_overdue = int(input().strip())
 
-# last values numeric hote hain, baaki title
-nums = []
-title_words = []
+# optional inputs
+try:
+    daily_rate = float(input().strip())
+except:
+    daily_rate = 5.0
 
-for x in data:
-    try:
-        nums.append(float(x))
-    except:
-        title_words.append(x)
-
-book_title = " ".join(title_words)
-
-days_overdue = int(nums[0])
-
-# optional parameters
-if len(nums) == 1:
-    fine, capped = calculate_fine(book_title, days_overdue)
-
-elif len(nums) == 2:
-    fine, capped = calculate_fine(book_title, days_overdue, nums[1])
-
-else:
-    fine, capped = calculate_fine(book_title, days_overdue, nums[1], nums[2])
+try:
+    max_fine = float(input().strip())
+except:
+    max_fine = 150.0
 
 
-# output
+fine, capped = calculate_fine(book_title, days_overdue, daily_rate, max_fine)
+
 print(f"Book: {book_title} Days overdue: {days_overdue} Fine: Rs. {fine}")
 
 if capped:
