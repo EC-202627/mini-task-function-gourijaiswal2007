@@ -9,11 +9,9 @@ def calculate_fine(book_title, days_overdue, daily_rate=5.0, max_fine=150.0):
     return fine, capped
 
 
-# input handling (FIXED)
 book_title = input().strip()
 days_overdue = int(input().strip())
 
-# optional inputs
 try:
     daily_rate = float(input().strip())
 except:
@@ -27,7 +25,9 @@ except:
 
 fine, capped = calculate_fine(book_title, days_overdue, daily_rate, max_fine)
 
-print(f"Book: {book_title} Days overdue: {days_overdue} Fine: Rs. {fine}")
+print(f"Book: {book_title}")
+print(f"Days overdue: {days_overdue}")
+print(f"Fine: Rs. {fine}")
 
 if capped:
     print(f"You have accumulated the maximum fine of INR: {fine}")
